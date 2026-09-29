@@ -1,7 +1,6 @@
 import os
 from pathlib import Path
 
-import dj_database_url
 from dotenv import load_dotenv
 from django.core.exceptions import ImproperlyConfigured
 
@@ -56,11 +55,12 @@ TEMPLATES = [{
 WSGI_APPLICATION = "config.wsgi.application"
 ASGI_APPLICATION = "config.asgi.application"
 
-database_url = os.getenv("DATABASE_URL")
-DATABASES = {"default": dj_database_url.parse(database_url, conn_max_age=600, ssl_require=not DEBUG) if database_url else {
-    "ENGINE": "django.db.backends.sqlite3",
-    "NAME": BASE_DIR / "db.sqlite3",
-}}
+volume_mount = os.getenv("RAILWAY_VOLUME_MOUNT_PATH")
+default_sqlite_path = Path(volume_mount) / "db.sqlite3" if volume_mount else BASE_DIR / "db.sqlite3"
+configured_sqlite_path = os.getenv("SQLITE_PATH", "").strip()
+SQLITE_PATH = Path(configured_sqlite_path) if configured_sqlite_path else default_sqlite_path
+SQLITE_PATH.parent.mkdir(parents=True, exist_ok=True)
+DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": SQLITE_PATH}}
 
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},

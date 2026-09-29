@@ -1,6 +1,6 @@
 # Ultimate Pinball Arcade Django backend
 
-This Django 5.2.17+ backend provides the product catalog API, inventory-backed order creation, crypto payment instructions, transaction-hash submission, and the staff admin. Python 3.11 is supported.
+This Django 5.2.17+ backend uses SQLite and provides the product catalog API, inventory-backed order creation, crypto payment instructions, transaction-hash submission, and the staff admin. Python 3.11 is supported.
 
 ## Run locally (Windows PowerShell)
 
@@ -22,7 +22,7 @@ Open `http://127.0.0.1:8000/` for the storefront and `/admin/` to manage product
 
 ## Crypto checkout setup
 
-Set these environment variables on the Django host before enabling checkout:
+The wallet addresses are set through environment variables (the supplied public receive addresses are in `.env.example` for local setup). Set these variables on the Django host before enabling checkout:
 
 | Variable | Payment network |
 | --- | --- |
@@ -34,9 +34,9 @@ The API creates an order from database prices, reserves stock for 30 minutes, an
 
 ## Deploying
 
-GitHub Pages serves static files and cannot run Django or its database. Set the hosting service root directory to `backend` and deploy it to a Python web host with PostgreSQL, set a strong `DJANGO_SECRET_KEY`, set `DJANGO_DEBUG=false`, configure `DJANGO_ALLOWED_HOSTS`, `DATABASE_URL`, and the wallet variables, then run `python manage.py collectstatic --noinput`, apply migrations, and run `python manage.py import_catalog`. The Django app serves the storefront at `/` and the logo/animation assets from the repository root.
+GitHub Pages serves static files and cannot run Django. Deploy the GitHub repository to Railway with the service root directory left at the repository root; the Django app serves `index.html` and its image assets from there. The root `requirements.txt` points Railway to the backend dependencies. Set the build command to `python -m pip install -r requirements.txt && python backend/manage.py collectstatic --noinput`. Attach a persistent Railway Volume to the Django service with mount path `/data`; the app automatically stores SQLite at `$RAILWAY_VOLUME_MOUNT_PATH/db.sqlite3` (or use `SQLITE_PATH` to override it). Set a strong `DJANGO_SECRET_KEY`, set `DJANGO_DEBUG=false`, configure `DJANGO_ALLOWED_HOSTS`, and add the wallet variables. Set the start command to `python backend/manage.py migrate --noinput && python backend/manage.py import_catalog && gunicorn --chdir backend config.wsgi:application --bind 0.0.0.0:$PORT` so migrations run after the volume is mounted. Generate a Railway public domain, then create a Django admin account from the running service shell with `python backend/manage.py createsuperuser`.
 
-For a separately hosted frontend, set the `api-base` meta tag in `index.html` to the Django API origin and set `DJANGO_CORS_ALLOWED_ORIGINS` to the exact storefront origin. Keep the API and browser page on HTTPS in production.
+Keep the Railway volume attached to the Django service so SQLite data survives redeploys. This SQLite setup is intended for one Django app instance; use periodic Railway volume backups. If the storefront is separately hosted, set the `api-base` meta tag in `index.html` to the Railway domain and set `DJANGO_CORS_ALLOWED_ORIGINS` to the exact storefront origin. Keep both on HTTPS in production.
 
 ## API
 
