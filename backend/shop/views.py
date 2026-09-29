@@ -46,6 +46,7 @@ def serialize_product(product):
         "images": product.images,
         "available": product.available,
         "inventory": product.stock_quantity if product.available else 0,
+        "created_at": product.created_at.isoformat(),
     }
 
 
@@ -59,6 +60,7 @@ def product_list(request):
         products = products.filter(Q(title__icontains=query) | Q(product_type__icontains=query))
     if category in {"machines", "accessories", "parts", "merch"}:
         products = products.filter(product_type__icontains=category[:-1] if category.endswith("s") else category)
+    products = products.order_by("-created_at", "title")
     return JsonResponse({"results": [serialize_product(product) for product in products]})
 
 
