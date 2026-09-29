@@ -48,6 +48,19 @@ class Product(models.Model):
         return self.is_active and self.stock_quantity > 0
 
 
+class ProductGalleryImage(models.Model):
+    product = models.ForeignKey(Product, related_name="uploaded_gallery_images", on_delete=models.CASCADE)
+    image = models.ImageField(upload_to="products/gallery/")
+    position = models.PositiveIntegerField(default=0)
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["position", "pk"]
+
+    def __str__(self):
+        return f"{self.product.title} gallery image {self.pk}"
+
+
 class Order(models.Model):
     class Status(models.TextChoices):
         PENDING = "pending_payment", "Awaiting payment"

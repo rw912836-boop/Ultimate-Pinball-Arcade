@@ -1,8 +1,9 @@
+from django import forms
 from django.contrib import admin, messages
 from django.db import transaction
 from django.utils import timezone
 
-from .models import CustomerProfile, Order, OrderItem, Product
+from .models import CustomerProfile, Order, OrderItem, Product, ProductGalleryImage
 
 
 @admin.register(CustomerProfile)
@@ -21,13 +22,59 @@ class CustomerProfileAdmin(admin.ModelAdmin):
         return obj.user.email
 
 
+class MultipleFileInput(forms.ClearableFileInput):
+    allow_multiple_selected = True
+
+
+class MultipleFileField(forms.FileField):
+    widget = MultipleFileInput
+
+    def clean(self, data, initial=None):
+        if not data:
+            return []
+        files = data if isinstance(data, (list, tuple)) else [data]
+        return [super(MultipleFileField, self).clean(file, initial) for file in files]
+
+
+class ProductGalleryImageInline(admin.TabularInline):
+    model = ProductGalleryImage
+    extra = 0
+    fields = ("image", "position", "uploaded_at")
+    readonly_fields = ("uploaded_at",)
+
+
+class ProductAdminForm(forms.ModelForm):
+    gallery_uploads = MultipleFileField(
+        required=False,
+        label="Upload gallery images",
+        help_text="Select multiple image files at once. Existing gallery images are kept.",
+    )
+
+    class Meta:
+        model = Product
+        fields = "__all__"
+
+
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
+    form = ProductAdminForm
     list_display = ("title", "product_type", "price", "stock_quantity", "is_active", "updated_at")
     list_filter = ("is_active", "product_type")
     search_fields = ("title", "slug", "external_id")
     prepopulated_fields = {"slug": ("title",)}
     readonly_fields = ("created_at", "updated_at")
+    inlines = (ProductGalleryImageInline,)
+
+    def save_related(self, request, form, formsets, change):
+        super().save_related(request, form, formsets, change)
+        files = form.cleaned_data.get("gallery_uploads", [])
+        next_position = (self.model.uploaded_gallery_images.filter(product=form.instance).order_by("-position").values_list("position", flat=True).first() or 0) + 1
+        for offset, image in enumerate(files):
+            ProductGalleryImage.objects.create(
+                product=form.instance,
+                image=image,
+                position=next_position + offset,
+            )
 
 
 class OrderItemInline(admin.TabularInline):

@@ -38,12 +38,20 @@ def storefront_asset(_request, filename):
 
 
 def serialize_product(product, request=None):
-    images = list(product.gallery_images or [])
+    images = []
     if product.images:
         uploaded_image = product.images.url
         if request is not None:
             uploaded_image = request.build_absolute_uri(uploaded_image)
-        images.insert(0, uploaded_image)
+        images.append(uploaded_image)
+    uploaded_gallery = []
+    for gallery_image in product.uploaded_gallery_images.all():
+        gallery_url = gallery_image.image.url
+        if request is not None:
+            gallery_url = request.build_absolute_uri(gallery_url)
+        uploaded_gallery.append(gallery_url)
+    images.extend(uploaded_gallery)
+    images.extend(product.gallery_images or [])
     return {
         "id": product.pk,
         "external_id": product.external_id,
