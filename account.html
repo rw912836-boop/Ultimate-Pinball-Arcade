@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f5f1">
+  <title>Customer account | Ultimate Pinball Arcade</title>
+  <style>
+    :root{color-scheme:light;--ink:#17191b;--muted:#666a6d;--line:#e4e4e0;--paper:#fff;--cream:#f6f5f1;--orange:#ff542d}
+    *{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font-family:Arial,sans-serif;min-height:100vh;display:flex;flex-direction:column}
+    header{height:76px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 max(22px,calc((100vw - 1160px)/2))}
+    .brand{display:flex;align-items:center;gap:11px;text-decoration:none;color:inherit}.brand img{width:42px;height:42px;object-fit:contain}.brand span{font-size:11px;line-height:1.35;font-weight:700;letter-spacing:.1em}.brand b{font-size:12px}
+    .back{color:var(--ink);font-size:13px;text-decoration:none}.back:hover{text-decoration:underline}
+    main{width:min(100% - 32px,490px);margin:58px auto;flex:1}.card{background:var(--paper);padding:35px 38px;border:1px solid var(--line);box-shadow:0 15px 45px #17191b0b}
+    .eyebrow{color:var(--orange);font-size:10px;letter-spacing:.16em;font-weight:700;text-transform:uppercase;margin:0 0 10px}.card h1{font-size:29px;letter-spacing:-.04em;margin:0 0 8px}.intro{color:var(--muted);font-size:13px;line-height:1.65;margin:0 0 24px}
+    .tabs{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--line);margin-bottom:23px}.tab{border:0;background:none;padding:12px 8px;color:var(--muted);font-size:13px;cursor:pointer;border-bottom:2px solid transparent}.tab.active{color:var(--ink);font-weight:700;border-color:var(--orange)}
+    form{display:grid;gap:13px}.field{display:grid;gap:6px}.field label{font-size:11px;font-weight:700}.field input,.field textarea{width:100%;border:1px solid #d7d7d3;border-radius:2px;padding:12px;font:14px Arial,sans-serif;background:#fff}.field input:focus,.field textarea:focus{outline:2px solid #ff542d44;border-color:var(--orange)}.field textarea{resize:vertical;min-height:68px}
+    .submit{border:0;background:var(--orange);color:#fff;padding:14px 16px;margin-top:5px;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer}.submit:hover{background:#e94323}.submit:disabled{opacity:.65;cursor:wait}
+    .message{min-height:20px;margin:14px 0 0;font-size:12px;line-height:1.5;color:#a5311b}.message.success{color:#27653d}.privacy{font-size:11px;color:#777;line-height:1.55;margin:16px 0 0}.signed{border:1px solid var(--line);padding:18px}.signed h2{font-size:18px;margin:0 0 8px}.signed p{color:var(--muted);font-size:13px;line-height:1.7;margin:5px 0}.signed strong{color:var(--ink)}
+    .hidden{display:none!important}footer{text-align:center;padding:20px;color:#777;font-size:11px}
+    @media(max-width:520px){header{height:66px;padding:0 16px}.brand img{width:36px;height:36px}.brand span{font-size:9px}main{margin:26px auto}.card{padding:27px 21px}.card h1{font-size:25px}}
+  </style>
+</head>
+<body>
+  <header>
+    <a class="brand" href="/" aria-label="Ultimate Pinball Arcade home"><img src="ultimate-pinball-logo.jpg" alt=""><span>ULTIMATE<br><b>PINBALL ARCADE</b></span></a>
+    <a class="back" href="/">← Back to shop</a>
+  </header>
+  <main>
+    <section class="card" aria-labelledby="account-title">
+      <p class="eyebrow">Your pinball account</p>
+      <h1 id="account-title">Welcome to the arcade.</h1>
+      <p class="intro">Create an account to make checkout easier, or sign in to continue.</p>
+      <div id="account-forms">
+        <div class="tabs" role="tablist" aria-label="Account action">
+          <button class="tab active" id="register-tab" type="button" role="tab" aria-selected="true" onclick="setMode('register')">Create account</button>
+          <button class="tab" id="login-tab" type="button" role="tab" aria-selected="false" onclick="setMode('login')">Sign in</button>
+        </div>
+        <form id="register-form" onsubmit="submitRegister(event)">
+          <div class="field"><label for="register-name">Full name</label><input id="register-name" name="name" autocomplete="name" required maxlength="120"></div>
+          <div class="field"><label for="register-email">Email</label><input id="register-email" name="email" type="email" autocomplete="email" required maxlength="254"></div>
+          <div class="field"><label for="register-phone">Phone (optional)</label><input id="register-phone" name="phone" type="tel" autocomplete="tel" maxlength="40"></div>
+          <div class="field"><label for="register-address">Shipping address (optional)</label><textarea id="register-address" name="shipping_address" autocomplete="shipping street-address" maxlength="1000"></textarea></div>
+          <div class="field"><label for="register-password">Password</label><input id="register-password" name="password" type="password" autocomplete="new-password" minlength="8" required></div>
+          <div class="field"><label for="register-confirm">Confirm password</label><input id="register-confirm" name="confirm_password" type="password" autocomplete="new-password" minlength="8" required></div>
+          <button class="submit" id="register-submit" type="submit">Create my account</button>
+        </form>
+        <form id="login-form" class="hidden" onsubmit="submitLogin(event)">
+          <div class="field"><label for="login-email">Email</label><input id="login-email" name="email" type="email" autocomplete="email" required maxlength="254"></div>
+          <div class="field"><label for="login-password">Password</label><input id="login-password" name="password" type="password" autocomplete="current-password" required></div>
+          <button class="submit" id="login-submit" type="submit">Sign in</button>
+        </form>
+        <p id="account-message" class="message" role="status" aria-live="polite"></p>
+        <p class="privacy">Your account details are used to support your shop orders. Never enter your payment wallet recovery phrase or private key.</p>
+      </div>
+      <div id="signed-in" class="signed hidden">
+        <h2>You’re signed in</h2>
+        <p>Name: <strong id="customer-name"></strong></p>
+        <p>Email: <strong id="customer-email"></strong></p>
+        <p id="customer-phone-row" class="hidden">Phone: <strong id="customer-phone"></strong></p>
+        <p id="customer-address-row" class="hidden">Shipping address: <strong id="customer-address"></strong></p>
+        <button class="submit" type="button" onclick="signOut()">Sign out</button>
+        <p id="signed-message" class="message" role="status" aria-live="polite"></p>
+      </div>
+    </section>
+  </main>
+  <footer>© 2026 Ultimate Pinball Arcade</footer>
+  <script>
+    const API_BASE = 'https://admin.ultimatepinballarcade.com';
+    let csrfToken = '';
+    async function refreshCsrf() {
+      const response = await fetch(`${API_BASE}/api/auth/csrf/`, { credentials: 'include', headers: { Accept: 'application/json' } });
+      const data = await response.json();
+      if (!response.ok || !data.csrf_token) throw new Error('Account service is not ready. Please try again shortly.');
+      csrfToken = data.csrf_token;
+    }
+    function setMode(mode) {
+      const registering = mode === 'register';
+      document.getElementById('register-form').classList.toggle('hidden', !registering);
+      document.getElementById('login-form').classList.toggle('hidden', registering);
+      document.getElementById('register-tab').classList.toggle('active', registering);
+      document.getElementById('login-tab').classList.toggle('active', !registering);
+      document.getElementById('register-tab').setAttribute('aria-selected', String(registering));
+      document.getElementById('login-tab').setAttribute('aria-selected', String(!registering));
+      document.getElementById('account-message').textContent = '';
+    }
+    function showCustomer(customer) {
+      document.getElementById('account-forms').classList.add('hidden');
+      document.getElementById('signed-in').classList.remove('hidden');
+      document.getElementById('customer-name').textContent = customer.name || 'Customer';
+      document.getElementById('customer-email').textContent = customer.email || '';
+      const phoneRow = document.getElementById('customer-phone-row');
+      phoneRow.classList.toggle('hidden', !customer.phone);
+      document.getElementById('customer-phone').textContent = customer.phone || '';
+      const addressRow = document.getElementById('customer-address-row');
+      addressRow.classList.toggle('hidden', !customer.shipping_address);
+      document.getElementById('customer-address').textContent = customer.shipping_address || '';
+    }
+    async function submitAccount(endpoint, payload, buttonId) {
+      const message = document.getElementById('account-message');
+      const button = document.getElementById(buttonId);
+      message.classList.remove('success');
+      message.textContent = 'Please wait…';
+      button.disabled = true;
+      try {
+        if (!csrfToken) await refreshCsrf();
+        const response = await fetch(`${API_BASE}${endpoint}`, {
+          method: 'POST', credentials: 'include',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json', 'X-CSRFToken': csrfToken },
+          body: JSON.stringify(payload)
+        });
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(data.error || 'We could not process your request. Please try again.');
+        await refreshCsrf();
+        showCustomer(data.customer);
+      } catch (error) {
+        message.textContent = error.message;
+      } finally {
+        button.disabled = false;
+      }
+    }
+    function submitRegister(event) {
+      event.preventDefault();
+      const form = event.currentTarget;
+      const values = Object.fromEntries(new FormData(form));
+      if (values.password !== values.confirm_password) {
+        document.getElementById('account-message').textContent = 'The passwords do not match.';
+        return;
+      }
+      submitAccount('/api/auth/register/', values, 'register-submit');
+    }
+    function submitLogin(event) {
+      event.preventDefault();
+      submitAccount('/api/auth/login/', Object.fromEntries(new FormData(event.currentTarget)), 'login-submit');
+    }
+    async function signOut() {
+      const message = document.getElementById('signed-message');
+      message.classList.remove('success');
+      try {
+        if (!csrfToken) await refreshCsrf();
+        const response = await fetch(`${API_BASE}/api/auth/logout/`, {
+          method: 'POST', credentials: 'include', headers: { 'X-CSRFToken': csrfToken, Accept: 'application/json' }
+        });
+        if (!response.ok) throw new Error('Please refresh the page and try again.');
+        await refreshCsrf();
+        document.getElementById('signed-in').classList.add('hidden');
+        document.getElementById('account-forms').classList.remove('hidden');
+        setMode('login');
+      } catch (error) {
+        message.textContent = error.message;
+      }
+    }
+    async function initializeAccount() {
+      try {
+        await refreshCsrf();
+        const response = await fetch(`${API_BASE}/api/auth/me/`, { credentials: 'include', headers: { Accept: 'application/json' } });
+        const data = await response.json();
+        if (data.authenticated) showCustomer(data.customer);
+      } catch (error) {
+        document.getElementById('account-message').textContent = error.message;
+      }
+    }
+    initializeAccount();
+  </script>
+</body>
+</html>

@@ -28,7 +28,7 @@ class Command(BaseCommand):
                 "price": row.get("price", "0.00"),
                 "product_type": row.get("product_type", "")[:120],
                 "tags": row.get("tags") or [],
-                "images": row.get("images") or [],
+                "gallery_images": row.get("images") or [],
                 "is_active": True,
             }
             product, was_created = Product.objects.get_or_create(

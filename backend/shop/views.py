@@ -2,8 +2,11 @@ import hashlib
 import json
 import re
 import secrets
+import uuid
 from datetime import timedelta
 
+from django.contrib.auth import authenticate, get_user_model, login, logout
+from django.contrib.auth.password_validation import validate_password
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
@@ -11,10 +14,11 @@ from django.db import transaction
 from django.http import FileResponse, Http404, JsonResponse
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
-from django.views.decorators.csrf import csrf_exempt
+from django.middleware.csrf import get_token
+from django.views.decorators.csrf import csrf_exempt, csrf_protect, ensure_csrf_cookie
 from django.views.decorators.http import require_GET, require_POST
 
-from .models import Order, OrderItem, Product
+from .models import CustomerProfile, Order, OrderItem, Product
 
 
 def storefront(_request):
@@ -33,7 +37,13 @@ def storefront_asset(_request, filename):
     return FileResponse(asset.open("rb"))
 
 
-def serialize_product(product):
+def serialize_product(product, request=None):
+    images = list(product.gallery_images or [])
+    if product.images:
+        uploaded_image = product.images.url
+        if request is not None:
+            uploaded_image = request.build_absolute_uri(uploaded_image)
+        images.insert(0, uploaded_image)
     return {
         "id": product.pk,
         "external_id": product.external_id,
@@ -43,7 +53,7 @@ def serialize_product(product):
         "price": str(product.price),
         "product_type": product.product_type,
         "tags": product.tags,
-        "images": product.images,
+        "images": images,
         "available": product.available,
         "inventory": product.stock_quantity if product.available else 0,
         "created_at": product.created_at.isoformat(),
@@ -61,13 +71,13 @@ def product_list(request):
     if category in {"machines", "accessories", "parts", "merch"}:
         products = products.filter(product_type__icontains=category[:-1] if category.endswith("s") else category)
     products = products.order_by("-created_at", "title")
-    return JsonResponse({"results": [serialize_product(product) for product in products]})
+    return JsonResponse({"results": [serialize_product(product, request) for product in products]})
 
 
 @require_GET
-def product_detail(_request, slug):
+def product_detail(request, slug):
     product = get_object_or_404(Product, slug=slug, is_active=True)
-    return JsonResponse(serialize_product(product))
+    return JsonResponse(serialize_product(product, request))
 
 
 def read_json(request):
@@ -86,6 +96,106 @@ def read_json(request):
 
 def order_error(message, status=400):
     return JsonResponse({"error": message}, status=status)
+
+
+def customer_account_data(user):
+    profile = CustomerProfile.objects.filter(user=user).first()
+    return {
+        "name": user.get_full_name(),
+        "email": user.email,
+        "phone": profile.phone if profile else "",
+        "shipping_address": profile.shipping_address if profile else "",
+    }
+
+
+@ensure_csrf_cookie
+@require_GET
+def auth_csrf(request):
+    return JsonResponse({"csrf_token": get_token(request)})
+
+
+@csrf_protect
+@require_POST
+def auth_register(request):
+    try:
+        data = read_json(request)
+    except ValueError as exc:
+        return order_error(str(exc))
+
+    name = " ".join(str(data.get("name", "")).split())[:120]
+    email = str(data.get("email", "")).strip().lower()[:254]
+    phone = str(data.get("phone", "")).strip()[:40]
+    shipping_address = str(data.get("shipping_address", "")).strip()[:1000]
+    password = str(data.get("password", ""))
+    if len(name) < 2:
+        return order_error("Enter your name.")
+    try:
+        validate_email(email)
+    except ValidationError:
+        return order_error("Enter a valid email address.")
+    if len(password) < 8:
+        return order_error("Use a password with at least 8 characters.")
+
+    User = get_user_model()
+    if User.objects.filter(email__iexact=email).exists():
+        return order_error("An account with this email already exists. Sign in instead.", 409)
+
+    first_name, _, last_name = name.partition(" ")
+    username = f"customer_{uuid.uuid4().hex}"
+    user_candidate = User(username=username, email=email, first_name=first_name, last_name=last_name)
+    try:
+        validate_password(password, user=user_candidate)
+    except ValidationError as exc:
+        return order_error(" ".join(exc.messages))
+
+    try:
+        with transaction.atomic():
+            user = User.objects.create_user(
+                username=username,
+                email=email,
+                password=password,
+                first_name=first_name,
+                last_name=last_name,
+                is_staff=False,
+                is_superuser=False,
+            )
+            CustomerProfile.objects.create(user=user, phone=phone, shipping_address=shipping_address)
+        login(request, user, backend="django.contrib.auth.backends.ModelBackend")
+    except Exception:
+        return order_error("We could not create your account. Please try again.", 503)
+    return JsonResponse({"authenticated": True, "customer": customer_account_data(user)}, status=201)
+
+
+@csrf_protect
+@require_POST
+def auth_login(request):
+    try:
+        data = read_json(request)
+    except ValueError as exc:
+        return order_error(str(exc))
+    email = str(data.get("email", "")).strip().lower()[:254]
+    password = str(data.get("password", ""))
+    User = get_user_model()
+    user_record = User.objects.filter(email__iexact=email, is_active=True).first()
+    user = authenticate(request, username=user_record.get_username(), password=password) if user_record else None
+    if not user:
+        return order_error("Email or password is incorrect.", 401)
+    login(request, user)
+    return JsonResponse({"authenticated": True, "customer": customer_account_data(user)})
+
+
+@csrf_protect
+@require_POST
+def auth_logout(request):
+    logout(request)
+    return JsonResponse({"authenticated": False})
+
+
+@require_GET
+def auth_me(request):
+    if not request.user.is_authenticated or request.user.is_staff:
+        return JsonResponse({"authenticated": False})
+    return JsonResponse({"authenticated": True, "customer": customer_account_data(request.user)})
 
 
 def expire_reservation(order):
@@ -161,6 +271,7 @@ def create_order(request):
 
             total = sum((by_slug[slug].price * quantity for slug, quantity in quantities.items()), start=0)
             order = Order.objects.create(
+                customer_account=request.user if request.user.is_authenticated and not request.user.is_staff else None,
                 customer_name=name,
                 customer_email=email,
                 customer_phone=phone,

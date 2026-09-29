@@ -2,7 +2,23 @@ from django.contrib import admin, messages
 from django.db import transaction
 from django.utils import timezone
 
-from .models import Order, OrderItem, Product
+from .models import CustomerProfile, Order, OrderItem, Product
+
+
+@admin.register(CustomerProfile)
+class CustomerProfileAdmin(admin.ModelAdmin):
+    list_display = ("customer_name", "email", "phone", "created_at")
+    search_fields = ("user__first_name", "user__last_name", "user__email", "phone")
+    readonly_fields = ("created_at",)
+    raw_id_fields = ("user",)
+
+    @admin.display(description="Name", ordering="user__first_name")
+    def customer_name(self, obj):
+        return obj.user.get_full_name() or obj.user.get_username()
+
+    @admin.display(description="Email", ordering="user__email")
+    def email(self, obj):
+        return obj.user.email
 
 
 @admin.register(Product)
@@ -23,17 +39,21 @@ class OrderItemInline(admin.TabularInline):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ("__str__", "customer_name", "customer_email", "total_usd", "payment_asset", "status", "created_at")
+    list_display = ("__str__", "customer_name", "customer_email", "customer_account_email", "total_usd", "payment_asset", "status", "created_at")
     list_filter = ("status", "payment_asset", "created_at")
-    search_fields = ("customer_name", "customer_email", "transaction_hash")
-    readonly_fields = ("reference", "access_token_hash", "created_at", "updated_at", "expires_at")
+    search_fields = ("customer_name", "customer_email", "customer_account__email", "transaction_hash")
+    readonly_fields = ("reference", "access_token_hash", "customer_account", "created_at", "updated_at", "expires_at")
     inlines = (OrderItemInline,)
     actions = ("mark_verified_paid", "cancel_and_return_stock")
     fieldsets = (
         ("Order", {"fields": ("reference", "status", "total_usd", "created_at", "expires_at")}),
-        ("Customer", {"fields": ("customer_name", "customer_email", "customer_phone", "shipping_address")}),
+        ("Customer", {"fields": ("customer_account", "customer_name", "customer_email", "customer_phone", "shipping_address")}),
         ("Payment", {"fields": ("payment_asset", "payment_network", "receiving_address", "transaction_hash", "access_token_hash")}),
     )
+
+    @admin.display(description="Account")
+    def customer_account_email(self, obj):
+        return obj.customer_account.email if obj.customer_account_id else "Guest checkout"
 
     @admin.action(description="Mark selected orders paid after verifying crypto on-chain")
     def mark_verified_paid(self, request, queryset):
