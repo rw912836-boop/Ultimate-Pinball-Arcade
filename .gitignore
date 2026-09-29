@@ -1,1 +1,8 @@
 ﻿.git-tools/
+.venv/
+backend/.venv/
+__pycache__/
+*.py[cod]
+backend/db.sqlite3
+backend/staticfiles/
+.env
