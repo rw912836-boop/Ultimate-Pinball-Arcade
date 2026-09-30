@@ -1,0 +1,19 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block dark-mode-vars %}{% endblock %}
+{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | Ultimate Pinball Arcade Store Manager{% endblock %}
+{% block branding %}
+  <div id="site-name"><a href="{% url 'admin:index' %}">Ultimate Pinball Arcade <span>Store Manager</span></a></div>
+{% endblock %}
+{% block nav-global %}
+  {% if user.is_authenticated %}
+  <nav class="manager-nav" aria-label="Store management">
+    <a href="{% url 'admin:shop_customerprofile_changelist' %}">Customer accounts</a>
+    <a href="{% url 'admin:shop_product_changelist' %}">Products</a>
+    <a class="manager-nav-add" href="{% url 'admin:shop_product_add' %}">Add a product</a>
+  </nav>
+  {% endif %}
+{% endblock %}
+{% block nav-sidebar %}{% endblock %}
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" href="{% static 'shop/admin.css' %}">{% endblock %}

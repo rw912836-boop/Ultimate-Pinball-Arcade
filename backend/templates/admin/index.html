@@ -1,0 +1,35 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block bodyclass %}{{ block.super }} manager-home{% endblock %}
+{% block nav-breadcrumbs %}{% endblock %}
+{% block content %}
+<div class="manager-dashboard">
+  <header class="manager-welcome">
+    <p class="manager-eyebrow">ULTIMATE PINBALL ARCADE</p>
+    <h1>Store dashboard</h1>
+    <p>Manage customer accounts and the products shown in your online store.</p>
+  </header>
+  <div class="manager-cards">
+    <section class="manager-card">
+      <div class="manager-card-icon" aria-hidden="true">♙</div>
+      <div>
+        <h2>Customer accounts</h2>
+        <p>View the accounts customers create on your website.</p>
+        <a class="manager-button" href="{% url 'admin:shop_customerprofile_changelist' %}">View customers</a>
+      </div>
+    </section>
+    <section class="manager-card">
+      <div class="manager-card-icon" aria-hidden="true">⚡</div>
+      <div>
+        <h2>Products</h2>
+        <p>Add pinball products, upload photos, set prices, and update stock.</p>
+        <div class="manager-card-actions">
+          <a class="manager-button" href="{% url 'admin:shop_product_add' %}">Add a product</a>
+          <a class="manager-secondary" href="{% url 'admin:shop_product_changelist' %}">View products</a>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+{% endblock %}
