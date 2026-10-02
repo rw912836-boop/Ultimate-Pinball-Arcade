@@ -80,6 +80,27 @@ body{font-size:16px}
 .review-ready p{max-width:690px;margin:0;color:#d0d3d5;font-size:16px;line-height:1.65}
 .review-ready .btn{white-space:nowrap}
 @media(max-width:760px){.why-shop{padding:54px 0}.why-grid{grid-template-columns:1fr}.why-card{min-height:0}.review-ready{padding:45px 0}.review-ready-inner{grid-template-columns:1fr;gap:15px}.review-stars{font-size:30px}.review-ready h2{font-size:25px}.review-ready .btn{justify-self:start}}
+.customer-reviews{padding:76px 0;background:#f5f4f0}
+.reviews-heading{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:38px}
+.reviews-heading h2{margin:0 0 8px;font:600 clamp(28px,3vw,40px)/1.1 'Space Grotesk';letter-spacing:-.04em}
+.reviews-heading p{margin:0;color:#666;font-size:16px}
+.reviews-score{display:grid;grid-template-columns:auto auto;column-gap:12px;align-items:center;padding:16px 20px;background:#fff;border:1px solid #e5e2db;border-radius:10px}
+.reviews-score strong{grid-row:span 2;font:600 32px 'Space Grotesk';color:#17191b}
+.reviews-score-stars{color:#df7c18;font-size:18px;letter-spacing:2px}
+.reviews-score small{color:#686b6e;font-size:12px}
+.review-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:26px 18px}
+.review-card{position:relative;min-width:0;margin-top:18px;padding:34px 23px 23px;background:#fff;border:1px solid #e3e0da;border-radius:13px;box-shadow:0 8px 24px #17191b0a}
+.review-card-top{display:flex;align-items:center;gap:12px;margin-bottom:14px;padding-right:48px}
+.review-avatar{position:absolute;top:-17px;right:19px;display:grid;width:48px;height:48px;place-items:center;border:3px solid #fff;border-radius:50%;background:linear-gradient(135deg,#ff7a48,#a93620);box-shadow:0 2px 10px #0002;color:#fff;font:700 14px 'Space Grotesk'}
+.reviewer-name{margin:0;color:#1d2933;font:700 17px 'DM Sans',Arial,sans-serif}
+.reviewer-label{display:block;margin-top:3px;color:#73777a;font-size:12px}
+.review-card-stars{margin:0 0 12px;color:#df7c18;font-size:19px;letter-spacing:2px}
+.review-card-stars .empty-star{color:#c6c8ca}
+.review-card-stars .half-star{background:linear-gradient(90deg,#df7c18 50%,#c6c8ca 50%);color:transparent;background-clip:text;-webkit-background-clip:text}
+.review-text{margin:0;color:#42474b;font-size:15px;line-height:1.75}
+.reviewer-avatar{border:2px solid #17191b;background:#f4f4f5}
+@media(max-width:980px){.review-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:620px){.customer-reviews{padding:54px 0}.reviews-heading{align-items:flex-start;flex-direction:column;margin-bottom:30px}.review-grid{grid-template-columns:1fr;gap:18px}.review-card{padding:31px 19px 20px}.reviews-score{padding:12px 15px}}
 </style></head>
 <body>
 <div class="announce">Ask us about free shipping!!</div>
@@ -99,7 +120,7 @@ body{font-size:16px}
 <section class="service" id="service"><div class="serviceinner"><div class="servicecopy"><div class="eyebrow">Your game, in good hands</div><h2>Pinball service<br>from people who play.</h2><p>Need a hand with setup, repair or regular maintenance? Our pinball service team helps keep the action going.</p><a href="#contact" class="btn outline">Talk to our team&nbsp; ↗</a></div><div class="servicephoto"><img src="pinball-neon.svg" alt="Ultimate Pinball Arcade service"></div></div></section>
 <section class="section pinball-guide" id="about-pinball"><div class="wrap"><div class="kicker">For collectors, players & home arcades</div><div class="guidecopy"><h2>Everything pinball, in one place.</h2><p>Ultimate Pinball Arcade brings together pinball machines, replacement parts, and accessories for the games you love. Browse new and used pinball machines, then make your setup your own with toppers, shooter knobs, side armor, art blades, shaker motors, and speaker lighting.</p><p>Keeping a machine in top shape? Our pinball service team can help with maintenance, repairs, and warranty service. Contact Ultimate Pinball Arcade in Washington, DC to talk about your game.</p></div><div class="guidegrid"><div class="guideitem"><h3>Pinball machines for your game room</h3><p>Explore new and used pinball machines, from current releases to favorites for a home arcade.</p><a href="#catalog" data-catlink="machines">Browse pinball machines →</a></div><div class="guideitem"><h3>Pinball parts, mods & accessories</h3><p>Find pinball toppers, shooter knobs, side armor, art blades, lighting kits, and replacement parts.</p><a href="#catalog" data-catlink="accessories">Shop pinball accessories →</a></div></div><div class="guidefaq"><h3>Pinball shop questions</h3><details><summary>What pinball products can I shop for?</summary><p>Browse pinball machines, parts, and accessories, including toppers, shooter knobs, side armor, art blades, shaker motors, and speaker lighting.</p></details><details><summary>Do you offer pinball repair and maintenance?</summary><p>Yes. Contact our team about pinball machine repair, maintenance, and warranty service.</p></details><details><summary>Where is Ultimate Pinball Arcade?</summary><p>We’re located at 1001 Wisconsin Ave NW, Washington, DC. Call 2026815722 to get in touch.</p></details></div></div></section>
 <section class="why-shop"><div class="wrap"><div class="sectionhead"><div><div class="kicker">Made for the love of the game</div><h2>Why shop with Ultimate Pinball Arcade?</h2></div><a class="textlink" href="#catalog">Explore the shop&nbsp; ↗</a></div><div class="why-grid"><article class="why-card"><span class="why-icon" aria-hidden="true">01</span><h3>Find your next favorite game</h3><p>Browse new and used pinball machines for a home game room, a growing collection, or your next arcade upgrade.</p><a href="#catalog" data-catlink="machines">Shop pinball machines&nbsp; →</a></article><article class="why-card"><span class="why-icon" aria-hidden="true">02</span><h3>Make your machine your own</h3><p>Explore pinball parts, toppers, shooter knobs, art blades, lighting, and accessories for your setup.</p><a href="#catalog" data-catlink="accessories">Find parts and accessories&nbsp; →</a></article><article class="why-card"><span class="why-icon" aria-hidden="true">03</span><h3>Get help with your game</h3><p>Need maintenance, repair, or setup help? Contact our pinball service team in Washington, DC.</p><a href="#service">Ask about pinball service&nbsp; →</a></article></div></div></section>
-<section class="review-ready" id="customer-reviews"><div class="wrap review-ready-inner"><div class="review-stars" aria-hidden="true">☆☆☆☆☆</div><div><div class="kicker">Your voice belongs in the arcade</div><h2>Customer reviews are coming soon.</h2><p>Have you purchased from us? Share your honest experience with our team so it can help another pinball fan find their next great game.</p></div><a class="btn light" href="#contact">Share your feedback&nbsp; ↗</a></div></section>
+<section class="customer-reviews" id="customer-reviews"><div class="wrap"><div class="reviews-heading"><div><div class="kicker">From the pinball community</div><h2>What Pinball Owners Say</h2><p>Experiences shared by pinball fans and collectors.</p></div><div class="reviews-score"><strong id="reviews-average">—</strong><span class="reviews-score-stars" id="reviews-overall-stars" aria-hidden="true"></span><small id="reviews-count"></small></div></div><div class="review-grid" id="review-grid"></div></div></section>
 <section class="newsletter"><div class="kicker">Stay in the loop</div><h2>Good things are coming.</h2><p>New games, fresh gear and pinball news. Straight to your inbox.</p><form class="emailform" onsubmit="event.preventDefault();toast('Thanks for subscribing!')"><input type="email" required placeholder="Your email address"><button aria-label="Subscribe">→</button></form></section></main>
 <footer class="footer" id="contact"><div class="wrap"><div class="footgrid"><div class="footerbrand"><div class="brandword"><img class="brandlogo" src="ultimate-pinball-icon.png" alt="Ultimate Pinball Arcade logo"><span class="brandtext">ULTIMATE<br><b>PINBALL ARCADE</b></span></div><p>Good games, good people, and everything that keeps pinball lit.</p></div><div><h3>Explore</h3><a href="#catalog">Pinball machines</a><a href="#catalog">Accessories</a><a href="#catalog">Parts & supplies</a><a href="#service">Service & repair</a></div><div><h3>We're here to help</h3><a href="#contact">Contact us</a><a href="#contact">Shipping information</a><a href="#contact">Refund policy</a><a href="#contact">Privacy policy</a><a href="#customer-reviews">Customer reviews</a></div><div class="footer-contact"><h3>Come say hello</h3><p>APPOINTMENT ONLY<br>1001 WISCONSIN AVE NW<br>WASHINGTON, DC<br><a href="tel:+12026815722">2026815722</a><a href="mailto:info@ultimatepinballarcade.com">info@ultimatepinballarcade.com</a></p></div></div><div class="copyright"><span>© 2026 Ultimate Pinball Arcade</span><span>Pinball machines & accessories · Powered by Shopify</span></div></div></footer>
 <div class="toast" id="toast"></div><div class="drawerback" id="drawerback" onclick="if(event.target===this)closeCart()"><aside class="drawer"><div class="drawerhead"><h2>Your bag <span id="bagqty"></span></h2><button class="close" onclick="closeCart()">×</button></div><div class="cartitems" id="cartitems"></div><div class="cartfoot" id="cartfoot"></div></aside></div><div class="modalback" id="modalback" onclick="if(event.target===this)closeModal()"><div class="modal" id="modal"></div></div>
@@ -2404,6 +2425,42 @@ function copyCryptoAddress(){let address=document.getElementById('crypto-address
 function fallbackCopyAddress(address,done){let field=document.createElement('textarea');field.value=address;field.style.position='fixed';field.style.opacity='0';document.body.appendChild(field);field.select();try{document.execCommand('copy');done()}catch(e){toast('Select and copy the address manually')}field.remove()}function changeQty(i,d){let x=cart.find(c=>c.i===i);if(!x)return;x.qty+=d;if(x.qty<1)cart=cart.filter(c=>c!==x);updateCart()}function openCart(){document.getElementById('drawerback').classList.add('open')}function closeCart(){document.getElementById('drawerback').classList.remove('open')}
 function toast(s){let t=document.getElementById('toast');t.textContent=s;t.classList.add('show');clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>t.classList.remove('show'),2200)}
 renderFilters();renderHeroGallery();renderGamesSpotlight();renderFeatured();renderCatalog();updateCart();refreshProductsFromBackend();
+</script>
+<script>
+const CUSTOMER_REVIEWS = [
+  {name:"Arthur V.",avatarClass:"cust-av",stars:"⭐⭐⭐⭐⭐",text:"Stunning restoration on the 1963 Gottlieb Sweet Hearts machine! Finding vintage electromechanical tables in this pristine condition is incredibly rare. It plays like an absolute dream."},
+  {name:"Rachel K.",avatarClass:"cust-rk",stars:"⭐⭐⭐⭐⭐",text:"Just took delivery of the Deadpool Premium Pinball Machine. The freight packaging was incredibly secure, completely wrapped and padded. Setup took less than an hour."},
+  {name:"Marcus G.",avatarClass:"cust-mg",stars:"⭐⭐⭐⭐⭐",text:"I was eyeing the Star Wars FOTE machine but it went Sold Out fast. Reached out to customer service and they were incredibly helpful with telling me when the next shipment arriving from the distributor is."},
+  {name:"Devon L.",avatarClass:"cust-dl",stars:"⭐⭐⭐⭐⭐",text:"The mechanical feedback on the John Wick Pinball Machine is unmatched. Fast flippers, pristine playfield, and crisp sound system. Worth every penny of the investment."},
+  {name:"Sarah T.",avatarClass:"cust-st",stars:"⭐⭐⭐⭐⭐",text:"Unbelievable inventory. Finding a brand new James Bond 007 table in stock and ready to ship is impossible right now, but Ultimate Pinball Arcade delivered seamlessly."},
+  {name:"Julian M.",avatarClass:"cust-jm",stars:"⭐⭐⭐⭐⭐",text:"I picked up the Metallica Topper Accessory Kit to complete my setup. The parts department was excellent, shipping out the dynamic lighting kit perfectly boxed with all instructions."},
+  {name:"Tariq W.",avatarClass:"cust-tw",stars:"⭐⭐⭐⭐★",text:"Excellent transaction for the Jurassic Park table. Cabinet art is completely flawless and the playfield leveling out of the box was spot on. Shipping carrier had a minor delay, but the machine itself is perfect."},
+  {name:"Elena N.",avatarClass:"cust-en",stars:"⭐⭐⭐⭐⭐",text:"The Uncanny X-Men machine is the absolute crown jewel of my basement game room. The multi-ball mechanics and ramps are incredibly snappy. Ultimate professional grade."},
+  {name:"Bradley R.",avatarClass:"cust-br",stars:"⭐⭐⭐⭐★",text:"Purchased the King Kong Pinball Machine. The machine build is heavy-duty and pristine. Highly recommend selecting their inside-delivery freight option if you have tight hallways!"},
+  {name:"Maya H.",avatarClass:"cust-mh",stars:"⭐⭐⭐⭐⭐",text:"Incredible communication throughout the freight process for our Walking Dead Remastered table. They sent tracking updates at every stage from their warehouse to my door."},
+  {name:"Jackson S.",avatarClass:"cust-js",stars:"⭐⭐⭐⭐⭐",text:"They genuinely care about high-end pinball. The technical team helped answer my questions about the diagnostic menu on the Metallica Remastered Premium model before I ordered."},
+  {name:"Naomi P.",avatarClass:"cust-np",stars:"⭐⭐⭐⭐⭐",text:"Absolute top-tier collectors' experience. The Gottlieb 1963 machine arrived perfectly tuned. It’s hard to find shops that know how to handle both vintage electromechanical and modern LCD tables."},
+  {name:"Liam F.",avatarClass:"cust-lf",stars:"⭐⭐⭐⭐★",text:"Superb condition on the Dungeons & Dragons machine. The playfield plastics, LEDs, and side armor are perfectly fitted. The buttons and plunger feel remarkably crisp."},
+  {name:"Sophia V.",avatarClass:"cust-sv",stars:"⭐⭐⭐⭐⭐",text:"I am so glad I purchased my premium Deadpool machine here instead of a generic liquidator site. You can tell they specialize exclusively in pinball mechanics."},
+  {name:"Andre B.",avatarClass:"cust-ab",stars:"⭐⭐⭐⭐⭐",text:"Flawless delivery on the John Wick edition. The high-definition screen integration and playfield toy assets are stunning. Best pinball supplier on the web right now."}
+];
+const reviewRating = review => (review.stars.match(/⭐/g)||[]).length + (review.stars.includes('★') ? 0.5 : 0);
+const reviewStars = rating => Array.from({length:5},(_,i)=>i+1<=Math.floor(rating)?'<span>★</span>':rating-i>=0.5?'<span class="half-star">★</span>':'<span class="empty-star">☆</span>').join('');
+function renderCustomerReviews(){
+  const grid=document.getElementById('review-grid');
+  if(!grid)return;
+  const ratings=CUSTOMER_REVIEWS.map(reviewRating);
+  const average=ratings.reduce((sum,rating)=>sum+rating,0)/ratings.length;
+  document.getElementById('reviews-average').textContent=average.toFixed(1);
+  document.getElementById('reviews-overall-stars').textContent='★★★★★';
+  document.getElementById('reviews-count').textContent=`${CUSTOMER_REVIEWS.length} customer reviews`;
+  grid.innerHTML=CUSTOMER_REVIEWS.map(review=>{
+    const rating=reviewRating(review);
+    const initials=review.name.split(/\s+/).map(part=>part[0]).join('').replace(/\./g,'').slice(0,2);
+    return `<article class="review-card pinball-review-card"><div class="reviewer-avatar ${esc(review.avatarClass)}" aria-hidden="true">${esc(initials)}</div><div class="review-rating review-card-stars" aria-label="Rated ${rating} out of 5 stars">${reviewStars(rating)}</div><h3 class="reviewer-title reviewer-name">${esc(review.name)}</h3><p class="review-body review-text">“${esc(review.text)}”</p></article>`;
+  }).join('');
+}
+renderCustomerReviews();
 </script><!-- Start of Tawk.to Script -->
 <script type="text/javascript">
 var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
