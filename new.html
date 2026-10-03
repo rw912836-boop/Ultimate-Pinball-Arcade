@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f5f1">
+  <meta name="description" content="Browse new pinball machines at Ultimate Pinball Arcade. Explore machine photos, product details, and USD price estimates.">
+  <link rel="canonical" href="https://ultimatepinballarcade.com/new.html">
+  <link rel="icon" type="image/png" href="ultimate-pinball-icon.png">
+  <link rel="stylesheet" href="catalog.css">
+  <title>New Pinball Machines | Ultimate Pinball Arcade</title>
+</head>
+<body data-catalog="pinball-new.json" data-condition="new">
+  <div class="announce">Pinball machines, parts &amp; arcade fun · Washington, DC</div>
+  <header class="header">
+    <button class="mobilemenu" aria-label="Toggle navigation" onclick="document.querySelector('.nav').classList.toggle('mobileopen')">☰</button>
+    <a class="brand" href="index.html" aria-label="Ultimate Pinball Arcade home"><img src="ultimate-pinball-icon.png" alt=""><span class="brandtext">ULTIMATE<br><b>PINBALL ARCADE</b></span></a>
+    <nav class="nav"><a href="index.html">HOME</a><a href="new.html" aria-current="page">NEW PINBALL</a><a href="used.html">USED PINBALL</a><a href="index.html#catalog">ACCESSORIES</a><a href="contact.html">CONTACT</a></nav>
+    <div class="tools"><a class="tool" href="account.html">ACCOUNT</a><a class="tool" href="checkout.html">BAG</a></div>
+  </header>
+  <main>
+    <section class="catalog-hero"><img id="hero-art" src="" alt="" aria-hidden="true"><div class="hero-inner"><div class="eyebrow">Explore the collection · <span id="catalog-total">New pinball machines</span></div><h1>New pinball machines</h1><p>Browse current new-machine listings, product photos, availability, and machine details. Use the filters to find the game you want.</p></div></section>
+    <section class="catalog-section" id="catalog">
+      <p class="notice" id="currency-note">Loading USD price conversion details…</p>
+      <div class="catalog-tools"><input id="catalog-search" class="search" type="search" placeholder="Search machine name, maker, or model" aria-label="Search new machines"><select id="catalog-sort" class="sort" aria-label="Sort machines"><option value="featured">Featured</option><option value="title">Name: A to Z</option><option value="price-asc">Price: low to high</option><option value="price-desc">Price: high to low</option></select><select id="catalog-stock" class="availability" aria-label="Filter availability"><option value="all">All availability</option><option value="available">Available</option><option value="sold-out">Sold out</option></select></div>
+      <p class="counts" id="result-count" aria-live="polite">Loading listings…</p>
+      <div class="productgrid" id="product-grid" aria-live="polite"></div>
+      <nav class="pagination" id="pagination" aria-label="Catalog pages"></nav>
+    </section>
+  </main>
+  <footer class="footer"><div class="footgrid"><div><h2>Ultimate Pinball Arcade</h2><p>Pinball machines, parts, and accessories for game rooms and collectors.</p></div><div><h3>Shop</h3><a href="new.html">New pinball machines</a><a href="used.html">Used pinball machines</a><a href="index.html#catalog">Accessories</a></div><div><h3>Information</h3><a href="contact.html">Contact us</a><a href="shipping.html">Shipping information</a><a href="refund-policy.html">Refund policy</a><a href="privacy-policy.html">Privacy policy</a></div><div><h3>Contact</h3><p>1001 Wisconsin Ave NW<br>Washington, DC<br><a href="tel:+12026815722">202-681-5722</a><a href="mailto:info@ultimatepinballarcade.com">info@ultimatepinballarcade.com</a></p></div></div><div class="copyright"><span>© 2026 Ultimate Pinball Arcade</span><span>Machine price and availability should be confirmed before ordering.</span></div></footer>
+  <script src="catalog-page.js" defer></script>
+</body>
+</html>
