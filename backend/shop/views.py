@@ -29,7 +29,7 @@ def storefront(_request):
 
 
 def storefront_asset(_request, filename):
-    if filename not in {"pinball-neon.svg", "ultimate-pinball-logo.jpg", "ultimate-pinball-icon.png"}:
+    if filename not in {"pinball-neon.svg", "ultimate-pinball-logo.jpg", "ultimate-pinball-icon.png", "sweet-hearts-full.jpg"}:
         raise Http404
     asset = settings.REPO_ROOT / filename
     if not asset.is_file():

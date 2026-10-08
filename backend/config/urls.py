@@ -20,6 +20,7 @@ urlpatterns = [
     path("api/orders/<str:reference>/payment/", views.submit_payment, name="submit-payment"),
     path("", views.storefront, name="storefront"),
     path("pinball-neon.svg", views.storefront_asset, {"filename": "pinball-neon.svg"}),
+    path("sweet-hearts-full.jpg", views.storefront_asset, {"filename": "sweet-hearts-full.jpg"}),
     path("assets/rocky/<str:filename>", views.rocky_asset, name="rocky-asset"),
     path("ultimate-pinball-logo.jpg", views.storefront_asset, {"filename": "ultimate-pinball-logo.jpg"}),
 ]
