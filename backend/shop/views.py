@@ -37,6 +37,23 @@ def storefront_asset(_request, filename):
     return FileResponse(asset.open("rb"))
 
 
+def rocky_asset(_request, filename):
+    allowed = {
+        "rocky-machine-angle.jpg",
+        "rocky-machine-front.jpg",
+        "rocky-backglass.jpg",
+        "rocky-playfield-detail.jpg",
+        "rocky-cabinet-detail.jpg",
+        "rocky-plunger.jpg",
+    }
+    if filename not in allowed:
+        raise Http404
+    asset = settings.REPO_ROOT / "assets" / "rocky" / filename
+    if not asset.is_file():
+        raise Http404
+    return FileResponse(asset.open("rb"), content_type="image/jpeg")
+
+
 def serialize_product(product, request=None):
     images = []
     if product.images:

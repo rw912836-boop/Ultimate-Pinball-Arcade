@@ -15,6 +15,8 @@
   const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const usd = (value) => value == null ? 'Ask for price' : `$${Number(value).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})} USD`;
   const availabilityText = (value) => value === 'sold-out' ? 'Sold out' : value === 'on-demand' ? 'On demand' : 'Available';
+  const priceLabel = (product) => product.priceCurrency === "USD" ? "Listed price - USD" : "Converted from EUR - USD estimate";
+  const priceDisclaimer = (product) => product.priceCurrency === "USD" ? "This listing price was provided in USD. Contact us to confirm the current price and availability before ordering." : "USD price is converted from the source listing. Confirm the current price, condition, and availability before ordering.";
 
   function card(product, index) {
     const images = product.images || [];
@@ -32,7 +34,7 @@
     return `<article class="catalog-card" data-index="${index}">
       <div class="machine-photo"><span class="condition-badge">${condition === 'new' ? 'New machine' : 'Used machine'}</span><span class="stock-badge${stockClass}">${availabilityText(product.availability)}</span>${main ? `<img class="main-product-image" src="${escapeHtml(main)}" alt="${imageAlt}" loading="lazy" onerror="this.style.display='none'">` : '<span>Photo coming soon</span>'}</div>
       ${thumbnails ? `<div class="thumbnails" aria-label="Additional machine photos">${thumbnails}</div>` : ''}
-      <div class="machine-info"><h2 class="machine-title">${title}</h2><div class="sku">${condition === 'new' ? 'New pinball' : 'Used pinball'}${sku}</div><div class="machine-price">${usd(product.priceUsd)}${oldPrice}<br><small>Converted from EUR · USD estimate</small></div>
+      <div class="machine-info"><h2 class="machine-title">${title}</h2><div class="sku">${condition === 'new' ? 'New pinball' : 'Used pinball'}${sku}</div><div class="machine-price">${usd(product.priceUsd)}${oldPrice}<br><small>${priceLabel(product)}</small></div>
       <div class="machine-actions"><a href="mailto:info@ultimatepinballarcade.com?subject=${subject}">Ask about machine</a><details class="details"><summary>Details</summary><div class="details-panel">${excerpt}${product.availability === 'sold-out' ? '<p><strong>Listed as sold out. Please contact us to check current availability.</strong></p>' : ''}${gallery}<p>USD price is converted from the source listing. Confirm the current price, condition, and availability with us before ordering.</p></div></details></div></div></article>`;
   }
 
@@ -63,7 +65,7 @@
     const hero = document.getElementById('hero-art');
     if (hero && all[0]?.images?.[0]) hero.src = all[0].images[0];
     const rate = Number(data.exchangeRate).toFixed(4);
-    document.getElementById('currency-note').textContent = `Prices are shown in USD after conversion from EUR at €1 = $${rate} (ECB reference rate, ${data.rateDate}). Prices, machine condition, and availability can change; contact us to confirm before placing an order.`;
+    document.getElementById('currency-note').textContent = `Supplier prices are converted from EUR to USD at 1 EUR = $${rate} (ECB reference rate, ${data.rateDate}). Rocky Pinball Machine is shown at its provided USD price. Prices, machine condition, and availability can change; contact us to confirm before ordering.`;
     document.getElementById('catalog-total').textContent = `${all.length} ${condition} machines`;
     draw();
   }).catch(() => { grid.innerHTML = '<div class="load-error">We could not load the machine catalog just now. Please refresh this page or contact us for help.</div>'; });

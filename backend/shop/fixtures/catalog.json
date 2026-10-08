@@ -1,5 +1,38 @@
 [
   {
+    "title": "Rocky Pinball Machine",
+    "handle": "rocky-pinball-machine",
+    "slug": "rocky-pinball-machine",
+    "price": "1299.00",
+    "priceUsd": 1299.0,
+    "variant_id": "rocky-pinball-machine",
+    "external_id": "rocky-pinball-machine",
+    "compare_at_price": null,
+    "regularPriceUsd": null,
+    "available": true,
+    "availability": "available",
+    "images": [
+      "assets/rocky/rocky-machine-angle.jpg",
+      "assets/rocky/rocky-machine-front.jpg",
+      "assets/rocky/rocky-backglass.jpg",
+      "assets/rocky/rocky-playfield-detail.jpg",
+      "assets/rocky/rocky-cabinet-detail.jpg",
+      "assets/rocky/rocky-plunger.jpg"
+    ],
+    "description": "Rocky Pinball Machine. Shows Rocky in USA shorts. Features Instant Win lanes 1-10, Left Hook and On The Ropes lanes, System 80B, four flippers, four pop bumpers, and eight drop targets.",
+    "product_type": "New Pinball Machine",
+    "condition": "new",
+    "sku": "ROCKY-1982",
+    "tags": [
+      "pinball machine",
+      "Rocky",
+      "Gottlieb",
+      "new pinball"
+    ],
+    "sourceUrl": "",
+    "price_currency": "USD"
+  },
+  {
     "title": "Used Bond Pro Balance",
     "handle": "used-bond-pro-balance",
     "price": "5242.05",
@@ -11,7 +44,7 @@
     "tags": []
   },
   {
-    "title": "DUNGEONS & DRAGONS: The Tyrant’s Eye Art Blades",
+    "title": "DUNGEONS & DRAGONS: The Tyrant\u2019s Eye Art Blades",
     "handle": "dungeons-dragons-the-tyrant-s-eye-art-blades",
     "price": "99.99",
     "variant_id": 55638259204387,
@@ -28,7 +61,7 @@
     ]
   },
   {
-    "title": "DUNGEONS & DRAGONS: The Tyrant’s Eye Side Armor",
+    "title": "DUNGEONS & DRAGONS: The Tyrant\u2019s Eye Side Armor",
     "handle": "dungeons-dragons-the-tyrant-s-eye-side-armor",
     "price": "349.99",
     "variant_id": 55638254387491,
@@ -43,7 +76,7 @@
     ]
   },
   {
-    "title": "DUNGEONS & DRAGONS: The Tyrant’s Eye Shooter Knob",
+    "title": "DUNGEONS & DRAGONS: The Tyrant\u2019s Eye Shooter Knob",
     "handle": "dungeons-dragons-the-tyrant-s-eye-shooter-knob",
     "price": "199.99",
     "variant_id": 55638251045155,
@@ -60,7 +93,7 @@
     ]
   },
   {
-    "title": "DUNGEONS & DRAGONS: The Tyrant’s Eye Topper",
+    "title": "DUNGEONS & DRAGONS: The Tyrant\u2019s Eye Topper",
     "handle": "dungeons-dragons-the-tyrant-s-eye-topper",
     "price": "1799.99",
     "variant_id": 55638245277987,
@@ -247,7 +280,7 @@
     "tags": []
   },
   {
-    "title": "Poké Ball Shooter Knob",
+    "title": "Pok\u00e9 Ball Shooter Knob",
     "handle": "poke-ball-shooter-knob",
     "price": "174.99",
     "variant_id": 55263041913123,
@@ -262,7 +295,7 @@
     "tags": []
   },
   {
-    "title": "Magikarp Pokémon Topper",
+    "title": "Magikarp Pok\u00e9mon Topper",
     "handle": "magikarp-pokemon-topper",
     "price": "1499.99",
     "variant_id": 55263038898467,
